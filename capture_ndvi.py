@@ -43,9 +43,14 @@ def save_image(image, filename):
     cv2.imwrite(filename, image)
 
 def send_image_to_endpoint(image_path, endpoint_url):
-    with open(image_path, 'rb') as image_file:
-        response = requests.post(endpoint_url, files={'fileToUpload': image_file})
-    return response
+    response = None
+    try:
+        with open(image_path, 'rb') as image_file:
+            response = requests.post(endpoint_url, files={'fileToUpload': image_file})
+    except Exception e:
+        print ("Error uploading")
+    finally:
+        return response
 
 while True:
     current_hour = datetime.datetime.now().hour
